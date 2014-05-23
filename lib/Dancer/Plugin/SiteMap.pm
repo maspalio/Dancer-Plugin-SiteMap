@@ -80,7 +80,7 @@ sub _html_sitemap {
     for my $url (@urls) {
         $content .= qq[  <li><a href="$url">$url</a></li>\n];
     }
-    $content .= qq[</ul>\n];
+    $content .= qq[</ul>\n] . $tail;
 
     # If the config specifies a HTML Wrapper for the HTML SiteMap - then use
     # that (which handily also stuffs it in the layout). Failing that, we need
@@ -226,6 +226,30 @@ eg, in the config.yml of the application:
             xml_route: '/sitemap_static.xml'
             html_route:                           # html sitemap is disabled.
 
+Generated HTML may be prefixed by html_head content and postfixed by html_tail
+content from F<config.yml>:
+
+    plugins:
+        SiteMap:
+            html_head: '<div class="container"><div class="row"><div class="column">'
+            html_tail: '</div></div></div>'
+
+This will generate:
+
+    ${html_head}<h2>Site Map</h2>
+    <ul class="sitemap">
+      <li><a href="/foo">/foo</a></li>
+      ...
+    </ul>${html_tail}
+
+instead of plain:
+
+    <h2>Site Map</h2>
+    <ul class="sitemap">
+      <li><a href="/foo">/foo</a></li>
+      ...
+    </ul>
+
 =head1 DESCRIPTION
 
 B<This plugin now supports Dancer 1 and 2!>
@@ -321,4 +345,3 @@ under the terms of either: the GNU General Public License as published
 by the Free Software Foundation; or the Artistic License.
 
 See http://dev.perl.org/licenses/ for more information.
-
